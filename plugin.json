@@ -1,7 +1,7 @@
 {
     "name": "Meowgram Connect",
     "version": "0.0.1",
-    "description": "Supercharge your Meogram client with the Meowgram Connect plugin, enabling smooth integration with the Cheshire Cat framework.",
+    "description": "Supercharge your Meowgram client with the Meowgram Connect plugin, enabling smooth integration with the Cheshire Cat framework.",
     "author_name": "Emanuele Morrone",
     "author_url": "https://www.linkedin.com/in/emanuele-morrone-25537423b/",
     "plugin_url": "https://github.com/Pingdred/meowgram_connect",

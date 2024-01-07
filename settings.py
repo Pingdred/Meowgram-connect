@@ -16,7 +16,7 @@ class MeogramConnectSettings(BaseModel):
     )
     reply_to: bool = Field(
         title="Reply to",
-        description="Choose if you want to use the Name or Username",
+        description=The Cheshire cat will quote the message it is responding to",
         default=True
     )
     

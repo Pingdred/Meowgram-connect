@@ -4,7 +4,7 @@
     "description": "Supercharge your Meowgram client with the Meowgram Connect plugin, enabling smooth integration with the Cheshire Cat framework.",
     "author_name": "Emanuele Morrone",
     "author_url": "https://www.linkedin.com/in/emanuele-morrone-25537423b/",
-    "plugin_url": "https://github.com/Pingdred/meowgram_connect",
+    "plugin_url": "https://github.com/Pingdred/meowgram-connect",
     "tags": "Telegram, client, integration",
     "thumb": "https://raw.githubusercontent.com/Pingdred/Meowgram/main/logo.png"
 }

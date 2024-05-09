@@ -1,8 +1,6 @@
 import json
 from typing import Dict
 
-from cat.log import log
-
 from cat.mad_hatter.mad_hatter import MadHatter
 from cat.mad_hatter.decorators import hook
 
@@ -22,28 +20,20 @@ def get_name(telegram_update):
     return None
 
 @hook
-def before_agent_starts(agent_input: Dict, cat) -> Dict:
+def after_cat_recalls_memories(cat) -> Dict:
 
-    user_message = cat.working_memory["user_message_json"]
-
+    user_message = cat.working_memory.user_message_json
     # This key exist only if the message is from Meowgram
     # if not exists we don't need to do anything
     if "meowgram" not in user_message.keys():
         return
     
+    # Get the name from the telegram update
     telegram_update = json.loads(user_message["meowgram"]["update"])
+    name = get_name(telegram_update)    
 
-    name = get_name(telegram_update)
-
-    log.critical(f"BEFORE: {name}, {not name}")
-    
-    if name is None:
-        log.critical("NO")
-        return
-    
-    agent_input["chat_history"] = agent_input["chat_history"].replace("- Human:", f"- {name}:")
-
-    return agent_input
+    # Update name in chat history
+    cat.working_memory.history[-1]["who"] = name
 
 
 @hook
@@ -61,41 +51,10 @@ def before_cat_sends_message(message, cat):
     message["meowgram"] = {
         "send_params": {},
     }
-
     send_params = message["meowgram"]["send_params"]
 
     if settings["reply_to"]:
         send_params["reply_to_message_id"] = telegram_update["message"]["message_id"]
-
-    return message
-
-
-@hook
-def agent_prompt_suffix(suffix, cat):
-    user_message = cat.working_memory["user_message_json"]
-
-    # This key exist only if the message is from Meowgram
-    # if not exists we don't need to do anything
-    if "meowgram" not in user_message.keys():
-        return
-
-    telegram_update = json.loads(user_message["meowgram"]["update"])
-
-    name = get_name(telegram_update)
     
-    if name is None:
-        return
 
-    suffix = f"""
-# Context
-{{episodic_memory}}
-{{declarative_memory}}
-{{tools_output}}
-
-## Conversation until now:{{chat_history}}
-- {name}: {{input}}
-- AI: """
-
-    return suffix
-
-        
+    return message     

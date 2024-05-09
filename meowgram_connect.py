@@ -50,11 +50,14 @@ def before_cat_sends_message(message, cat):
 
     message["meowgram"] = {
         "send_params": {},
+        "settings": {},
     }
     send_params = message["meowgram"]["send_params"]
+    meowgram_settings = message["meowgram"]["settings"]
 
     if settings["reply_to"]:
         send_params["reply_to_message_id"] = telegram_update["message"]["message_id"]
     
+    meowgram_settings["show_tts_text"] = settings["show_tts_text"]
 
     return message     

@@ -19,6 +19,11 @@ class MeogramConnectSettings(BaseModel):
         description="The Cheshire cat will quote the message it is responding to",
         default=True
     )
+    show_tts_text: bool = Field(
+        title="Show Voice Note Transciption",
+        description="Show transcript when the message is a voice note",
+        default=True
+    )
     
 
 @plugin

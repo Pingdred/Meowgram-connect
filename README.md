@@ -1,26 +1,24 @@
 # Meowgram Connect
 
-[![awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=awesome+plugin&color=383938&style=for-the-badge&logo=cheshire_cat_ai)](https://)  
-[![Awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=Awesome+plugin&color=000000&style=for-the-badge&logo=cheshire_cat_ai)](https://)  
 [![awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=awesome+plugin&color=F4F4F5&style=for-the-badge&logo=cheshire_cat_black)](https://)
 
-Write here all the useful information about your plugin.
+Supercharge your [Meowgram client](https://github.com/Pingdred/Meowgram) with the Meowgram Connect plugin, enabling smooth integration with the Cheshire Cat framework.
 
-This repository is the template to automate the release of official Cheshire Cat AI plugins. 
+## Installation
 
-## Usage
+Choose one of the following methods to install Meowgram Connect:
 
-1. Create a new repository clicking on the `Use this template` button.
-2. Clone your new repo directly in the Cat's `plugins` folder.
-3. Run the `setup.py` script:
-```bash
-python setup.py
-```
-The script will prompt you to write the name of your plugin and make an initial setup setting the name in the files.
+1. Install via Cheshire Cat Admin Panel:
+    Navigate to the plugins tab in the Cheshire Cat admin panel.
+    Use the search bar to locate Meowgram Connect, then click "install".
 
-4. Start developing!
+2. Manual Installation:
+    Clone the repository into the Cheshire Cat plugins folder using the command:
 
-> **Important**
-> A new release of your plugin is triggered every time you set a new `version` in the `plugin.json` file.
-> Please, remember to set it correctly every time to want to release an update.
+    ```bash
+    git clone https://github.com/Pingdred/meowgram-connect.git
+    ```
 
+    Activate the plugin in the admin panel under the plugins tab.
+
+Once installed, access the plugin settings from the admin panel and customize your chat settings.

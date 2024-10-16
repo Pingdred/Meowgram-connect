@@ -9,8 +9,8 @@ from .settings import NameType
 def get_name(telegram_update):
     settings = MadHatter().get_plugin().load_settings()
     
-    name = telegram_update["message"]["chat"].get("first_name", None)
-    username = telegram_update["message"]["chat"].get("username", None)
+    name = telegram_update["message"]["from"].get("first_name", None)
+    username = telegram_update["message"]["from"].get("username", None)
 
     if settings["name_to_use"] == NameType.NAME.value and name:
         return name

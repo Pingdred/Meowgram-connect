@@ -1,14 +1,32 @@
-from typing import Dict, Union
+from functools import wraps
+from typing import Callable, Dict, Union
 
-from cat.mad_hatter.mad_hatter import MadHatter
-from cat.looking_glass.stray_cat import StrayCat
-from cat.memory.working_memory import WorkingMemory
 from cat.experimental.form import CatFormState
+from cat.log import log
+from cat.looking_glass.stray_cat import StrayCat
+from cat.mad_hatter.mad_hatter import MadHatter
+from cat.memory.working_memory import WorkingMemory
 
 from .settings import NameType
 
 
-def get_name(telegram_update):
+def from_meowgram(func: Callable) -> Callable:
+    """Decorator that checks if a message is from Meowgram before calling the function."""
+
+    @wraps(func)
+    def wrapper(*args, cat: StrayCat, **kwargs):
+        user_message = cat.working_memory.user_message_json
+
+        # Checking if `user_message` is from Meowgram
+        if user_message and "meowgram" in user_message.keys():
+            return func(*args, cat, **kwargs)
+
+        log.debug("Message not coming from Meowgram.")
+
+    return wrapper
+
+
+def get_name(telegram_update) -> str | None:
     """Retrieve the user's name or username based on settings."""
     settings = MadHatter().get_plugin().load_settings()
 
@@ -27,25 +45,22 @@ def get_name(telegram_update):
     return None
 
 
-def is_from_meowgram(user_message) -> bool:
-    """Check if the message is from Meowgram."""
-    return "meowgram" in user_message.keys()
-
-
 def handle_form_action(cat: StrayCat, form_action) -> Union[None, Dict]:
     """Handle the form action from a user message."""
     active_form = cat.working_memory.active_form
     # Check if the form name matches the active form
-    if form_action["form_name"] != active_form.name:
+    if not active_form or form_action["form_name"] != active_form.name:
         return
-    
+
     # Validate action and update form state accordingly
     if form_action["action"] in {"confirm", "cancel"}:
         active_form._state = CatFormState.CLOSED
         if form_action["action"] == "confirm":
             message = active_form.submit(active_form._model)
+
         message = active_form.message()
 
+        # Delete form from working memory
         cat.working_memory.active_form = None
 
         return message
@@ -53,11 +68,10 @@ def handle_form_action(cat: StrayCat, form_action) -> Union[None, Dict]:
 
 def get_send_params(cat: StrayCat, telegram_update) -> Dict:
     """Get parameters to send back to Meowgram."""
+    settings = cat.mad_hatter.get_plugin().load_settings()
     send_params = {}
     # If replying to a message, set the reply_to_message_id
-    if cat.mad_hatter.get_plugin().load_settings()["reply_to"] and telegram_update.get(
-        "message"
-    ):
+    if settings["reply_to"] and telegram_update.get("message"):
         send_params["reply_to_message_id"] = telegram_update["message"]["message_id"]
     return send_params
 

@@ -22,8 +22,8 @@ def agent_fast_reply(fast_reply, cat: StrayCat) -> Union[None, Dict]:
     user_message: UserMessage = cat.working_memory.user_message_json
 
     # Check if there is a form action
-    if "form_action" in user_message["meowgram"].keys():
-        form_action = user_message["meowgram"]["form_action"]
+    if "form_action" in user_message.meowgram.keys():
+        form_action = user_message.meowgram["form_action"]
 
         return handle_form_action(cat, form_action)
 
@@ -35,7 +35,7 @@ def after_cat_recalls_memories(cat: StrayCat) -> Dict:
     user_message: UserMessage = cat.working_memory.user_message_json
 
     # Parse the Telegram update and get the user's name
-    telegram_update = json.loads(user_message["meowgram"]["update"])
+    telegram_update = json.loads(user_message.meowgram["update"])
     name = get_name(telegram_update)
 
     # Update the last entry in chat history with the user's name
@@ -47,13 +47,13 @@ def after_cat_recalls_memories(cat: StrayCat) -> Dict:
 @from_meowgram
 def before_cat_sends_message(message, cat: StrayCat) -> Dict:
     """Prepare message with Meowgram-specific parameters before sending."""
-    user_message: UserMessage = cat.working_memory["user_message_json"]
+    user_message: UserMessage = cat.working_memory.user_message_json
 
     # Parse the Telegram update
-    telegram_update = json.loads(user_message["meowgram"]["update"])
+    telegram_update = json.loads(user_message.meowgram["update"])
 
     # Prepare Meowgram-specific parameters
-    message["meowgram"] = {
+    message.meowgram = {
         "send_params": get_send_params(cat, telegram_update),
         "settings": get_meowgram_settings(cat),
         "active_form": get_form_state(cat.working_memory),

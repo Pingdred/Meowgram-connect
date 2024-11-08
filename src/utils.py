@@ -18,7 +18,7 @@ def from_meowgram(func: Callable) -> Callable:
         user_message = cat.working_memory.user_message_json
 
         # Checking if `user_message` is from Meowgram
-        if user_message and "meowgram" in user_message.keys():
+        if user_message and ("meowgram" in user_message.keys()):
             return func(*args, cat, **kwargs)
 
         log.debug("Message not coming from Meowgram.")
@@ -61,6 +61,7 @@ def handle_form_action(cat: StrayCat, form_action) -> Union[None, Dict]:
         message = active_form.message()
 
         # Delete form from working memory
+        log.debug("Deleting form form working memory")
         cat.working_memory.active_form = None
 
         return message

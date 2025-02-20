@@ -1,5 +1,8 @@
+from enum import Enum
 from functools import wraps
 from typing import Callable, Dict, Union
+
+from pydantic import BaseModel
 
 from cat.experimental.form import CatFormState
 from cat.log import log
@@ -8,6 +11,30 @@ from cat.mad_hatter.mad_hatter import MadHatter
 from cat.memory.working_memory import WorkingMemory
 
 from .settings import NameType
+
+class PayloadType(Enum):
+    FORM_ACTION = "form_action"
+    NEW_MESSAGE = "new_message"
+    USER_ACTION = "user_action" 
+
+
+class NewMessageData(BaseModel):
+    update: dict
+    
+
+class FormActionData(BaseModel):
+    form_name: str
+    action: str
+
+
+class MeowgramPayload(BaseModel):
+    data: FormActionData | NewMessageData
+
+    @property
+    def type(self) -> PayloadType:
+        if isinstance(self.data, FormActionData):
+            return PayloadType.FORM_ACTION
+        return PayloadType.NEW_MESSAGE   
 
 
 def from_meowgram(func: Callable) -> Callable:
@@ -45,26 +72,28 @@ def get_name(telegram_update) -> str | None:
     return None
 
 
-def handle_form_action(cat: StrayCat, form_action) -> Union[None, Dict]:
+def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None, Dict]:
     """Handle the form action from a user message."""
     active_form = cat.working_memory.active_form
     # Check if the form name matches the active form
-    if not active_form or form_action["form_name"] != active_form.name:
+    if not active_form or form_action.form_name != active_form.name:
         return
 
     # Validate action and update form state accordingly
-    if form_action["action"] in {"confirm", "cancel"}:
-        active_form._state = CatFormState.CLOSED
-        if form_action["action"] == "confirm":
-            message = active_form.submit(active_form._model)
-
-        message = active_form.message()
-
+    if form_action.action in {"confirm", "cancel"}:
         # Delete form from working memory
         log.debug("Deleting form form working memory")
         cat.working_memory.active_form = None
 
-        return message
+        # Close the form
+        active_form._state = CatFormState.CLOSED
+        
+        # Submit the form if confirmed
+        if form_action.action == "confirm":
+           return active_form.submit(active_form._model)
+
+        # Else closing message if cancelled
+        return active_form.message()
 
 
 def get_send_params(cat: StrayCat, telegram_update) -> Dict:

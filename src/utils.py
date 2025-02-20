@@ -72,8 +72,8 @@ def get_send_params(cat: StrayCat, telegram_update) -> Dict:
     settings = cat.mad_hatter.get_plugin().load_settings()
     send_params = {}
     # If replying to a message, set the reply_to_message_id
-    if settings["reply_to"] and telegram_update.get("message"):
-        send_params["reply_to_message_id"] = telegram_update["message"]["message_id"]
+    if settings["reply_to"] and telegram_update["message"]:
+        send_params["reply_to"] = telegram_update["message"]["message_id"]
     return send_params
 
 

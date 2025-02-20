@@ -1,10 +1,10 @@
-import json
 from typing import Dict, Union
 
 from cat.convo.messages import UserMessage
 from cat.looking_glass.stray_cat import StrayCat
 from cat.mad_hatter.decorators import hook
 
+from .settings import MeogramConnectSettings
 from .utils import (
     get_form_state,
     get_meowgram_settings,
@@ -17,7 +17,7 @@ from .utils import (
 
 @hook
 @from_meowgram
-def agent_fast_reply(fast_reply, cat: StrayCat) -> Union[None, Dict]:
+def fast_reply(fast_reply, cat: StrayCat) -> Union[None, Dict]:
     """Handle fast replies to user messages."""
     user_message: UserMessage = cat.working_memory.user_message_json
 
@@ -48,6 +48,7 @@ def after_cat_recalls_memories(cat: StrayCat) -> Dict:
 def before_cat_sends_message(message, cat: StrayCat) -> Dict:
     """Prepare message with Meowgram-specific parameters before sending."""
     user_message: UserMessage = cat.working_memory.user_message_json
+    settings = MeogramConnectSettings(**cat.mad_hatter.get_plugin().load_settings())    
 
     # Parse the Telegram update
     telegram_update = user_message.meowgram["update"]
@@ -56,6 +57,6 @@ def before_cat_sends_message(message, cat: StrayCat) -> Dict:
     message.meowgram = {
         "send_params": get_send_params(cat, telegram_update),
         "settings": get_meowgram_settings(cat),
-        "active_form": get_form_state(cat.working_memory),
+        "active_form": get_form_state(cat.working_memory) if settings.show_form_buttons else None,
     }
     return message

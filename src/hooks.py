@@ -35,12 +35,12 @@ def after_cat_recalls_memories(cat: StrayCat) -> Dict:
     user_message: UserMessage = cat.working_memory.user_message_json
 
     # Parse the Telegram update and get the user's name
-    telegram_update = json.loads(user_message.meowgram["update"])
+    telegram_update = user_message.meowgram["update"]
     name = get_name(telegram_update)
 
     # Update the last entry in chat history with the user's name
     if name:
-        cat.working_memory.history[-1]["who"] = name
+        cat.working_memory.history[-1].who = name
 
 
 @hook
@@ -50,7 +50,7 @@ def before_cat_sends_message(message, cat: StrayCat) -> Dict:
     user_message: UserMessage = cat.working_memory.user_message_json
 
     # Parse the Telegram update
-    telegram_update = json.loads(user_message.meowgram["update"])
+    telegram_update = user_message.meowgram["update"]
 
     # Prepare Meowgram-specific parameters
     message.meowgram = {

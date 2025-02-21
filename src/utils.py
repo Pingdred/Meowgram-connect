@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import wraps
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Union, Optional
 
 from pydantic import BaseModel
 
@@ -18,9 +18,26 @@ class PayloadType(Enum):
     USER_ACTION = "user_action" 
 
 
+class UserInfo(BaseModel):
+    id: int
+    username: str
+    first_name: str | None 
+    last_name: str | None
+
+
+class ReplyTo(BaseModel):
+    when: float
+    is_from_bot: bool = False
+    text: Optional[str] = None
+    audio: Optional[str] = None
+    image: Optional[str] = None
+
+
 class NewMessageData(BaseModel):
-    update: dict
-    
+    message_id: int
+    user_info: UserInfo
+    reply_to_message: ReplyTo | None  
+
 
 class FormActionData(BaseModel):
     form_name: str
@@ -53,25 +70,6 @@ def from_meowgram(func: Callable) -> Callable:
     return wrapper
 
 
-def get_name(telegram_update) -> str | None:
-    """Retrieve the user's name or username based on settings."""
-    settings = MadHatter().get_plugin().load_settings()
-
-    # Extract user information from the Telegram update
-    user_info = telegram_update.get("message", {}).get("from", {})
-    name = user_info.get("first_name")
-    username = user_info.get("username")
-
-    # Determine which name to use based on settings
-    name_type = settings["name_to_use"]
-    if name_type == NameType.NAME.value and name:
-        return name
-    elif name_type == NameType.USERNAME.value and username:
-        return username
-
-    return None
-
-
 def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None, Dict]:
     """Handle the form action from a user message."""
     active_form = cat.working_memory.active_form
@@ -94,16 +92,6 @@ def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None
 
         # Else closing message if cancelled
         return active_form.message()
-
-
-def get_send_params(cat: StrayCat, telegram_update) -> Dict:
-    """Get parameters to send back to Meowgram."""
-    settings = cat.mad_hatter.get_plugin().load_settings()
-    send_params = {}
-    # If replying to a message, set the reply_to_message_id
-    if settings["reply_to"] and telegram_update["message"]:
-        send_params["reply_to"] = telegram_update["message"]["message_id"]
-    return send_params
 
 
 def get_meowgram_settings(cat: StrayCat) -> Dict:

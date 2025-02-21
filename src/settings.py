@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel, Field
+
 from cat.mad_hatter.decorators import plugin
 
 class NameType(Enum):
@@ -29,7 +30,7 @@ class MeogramConnectSettings(BaseModel):
         description="Show transcript when the message is a voice note",
         default=True
     )
-    
+
 
 @plugin
 def settings_model():   

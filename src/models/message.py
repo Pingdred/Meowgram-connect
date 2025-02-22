@@ -43,7 +43,7 @@ class CustomUserMessage(UserMessage):
         Returns:
             text (str | None): The text of the message being replied to.
         """
-        if self.meowgram.type != PayloadType.NEW_MESSAGE:
+        if self.meowgram.mtype != PayloadType.NEW_MESSAGE:
             return None
         
         if self.meowgram.data.reply_to_message is None:
@@ -64,7 +64,7 @@ class CustomUserMessage(UserMessage):
             image (str | None): The image uri/url of the message being replied to.
         """
 
-        if self.meowgram.type != PayloadType.NEW_MESSAGE:
+        if self.meowgram.mtype != PayloadType.NEW_MESSAGE:
             return None
         
         if self.meowgram.data.reply_to_message is None:
@@ -81,7 +81,7 @@ class CustomUserMessage(UserMessage):
         Returns:
             user_info (UserInfo | None): The user info if the message is a new message.
         """
-        if self.meowgram.type != PayloadType.NEW_MESSAGE:
+        if self.meowgram.mtype != PayloadType.NEW_MESSAGE:
             return None
         return self.meowgram.data.user_info
     
@@ -94,7 +94,7 @@ class CustomUserMessage(UserMessage):
         Returns:
             message_id (int | None): The message id if the message is a new message.
         """
-        if self.meowgram.type != PayloadType.NEW_MESSAGE:
+        if self.meowgram.mtype != PayloadType.NEW_MESSAGE:
             return None
         return self.meowgram.data.message_id
     
@@ -107,7 +107,7 @@ class CustomUserMessage(UserMessage):
         Returns:
             form action (FormActionData, None): The form action data if the message is a form action.
         """
-        if self.meowgram.type != PayloadType.FORM_ACTION:
+        if self.meowgram.mtype != PayloadType.FORM_ACTION:
             return None
         return self.meowgram.data
     

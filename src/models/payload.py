@@ -27,8 +27,14 @@ class MeowgramPayload(BaseModel):
     data: FormActionData | NewMessageData
 
     @property
-    def type(self) -> PayloadType:
-        if isinstance(self.data, FormActionData):
-            return PayloadType.FORM_ACTION
-        return PayloadType.NEW_MESSAGE   
+    def mtype(self) -> Optional[PayloadType]:
+        types_lookup = {
+            FormActionData: PayloadType.FORM_ACTION,
+            NewMessageData: PayloadType.NEW_MESSAGE,
+            MeogramConnectSettings: PayloadType.SETTINGS_UPDATE
+        }
+
+        if t := types_lookup.get(type(self.data)):
+            return t
+    
 

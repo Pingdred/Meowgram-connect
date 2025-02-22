@@ -11,9 +11,13 @@ from ..utils import from_meowgram
 def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None, Dict]:
     """Handle the form action from a user message."""
     active_form = cat.working_memory.active_form
+    # Meogram always sends the form name in lower case and with underscores
+    active_form_name = active_form.name.replace(" ", "_").lower()
     # Check if the form name matches the active form
-    if not active_form or form_action.form_name != active_form.name:
-        return
+    if not active_form or form_action.form_name != active_form_name:
+        return {
+            "output": "",
+        }
 
     # Validate action and update form state accordingly
     if form_action.action in {"confirm", "cancel"}:

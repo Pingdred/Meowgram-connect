@@ -2,8 +2,8 @@ from typing import Dict
 from functools import wraps
 from typing import Callable, Optional
 
-from cat.looking_glass.stray_cat import StrayCat
 from cat.memory.working_memory import WorkingMemory
+from cat.looking_glass.stray_cat import StrayCat
 from cat.log import log
 
 from .models.message import CustomUserMessage
@@ -22,15 +22,15 @@ def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str
             user_message = cat.working_memory.user_message_json
             if not user_message:
                 return
-            
-            user_message = CustomUserMessage(**user_message.model_dump())
-    
-            if not user_message.meowgram:
+
+            if "meowgram" not in user_message.keys():
                 log.debug("Message not coming from Meowgram.")
                 return
-            
+                        
             log.info("Message coming from Meowgram.")
-            if (message_type is None) or (message_type == user_message.message_type):
+            custom_user_message = CustomUserMessage(**user_message.model_dump())
+
+            if (message_type is None) or (message_type == custom_user_message.message_type):
                 return func(*args, cat, **kwargs)
 
         return wrapper

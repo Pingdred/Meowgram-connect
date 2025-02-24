@@ -115,6 +115,6 @@ class CustomUserMessage(UserMessage):
     def message_type(self) -> PayloadType:
         """
         Return the meowgram message type.
-        Short hand for `.meowgram.type`.
+        Short hand for `.meowgram.mtype`.
         """
-        return self.meowgram.type
+        return self.meowgram.mtype

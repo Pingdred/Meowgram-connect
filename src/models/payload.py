@@ -31,7 +31,6 @@ class MeowgramPayload(BaseModel):
         types_lookup = {
             FormActionData: PayloadType.FORM_ACTION,
             NewMessageData: PayloadType.NEW_MESSAGE,
-            MeogramConnectSettings: PayloadType.SETTINGS_UPDATE
         }
 
         if t := types_lookup.get(type(self.data)):

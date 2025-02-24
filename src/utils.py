@@ -30,8 +30,13 @@ def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str
             log.info("Message coming from Meowgram.")
             custom_user_message = CustomUserMessage(**user_message.model_dump())
 
-            if (message_type is None) or (message_type == custom_user_message.message_type):
-                return func(*args, cat, **kwargs)
+            try:
+                if (message_type is None) or (message_type == custom_user_message.message_type):
+                    return func(*args, cat, **kwargs)
+            except Exception as e:
+                from traceback import print_exc
+                log.error(f"Error in from_meowgram decorator: {e}")
+                print_exc()
 
         return wrapper
     

@@ -6,5 +6,6 @@
     "author_url": "https://www.linkedin.com/in/emanuele-morrone-25537423b/",
     "plugin_url": "https://github.com/Pingdred/meowgram-connect",
     "tags": "Telegram, meowgram client",
-    "thumb": "https://raw.githubusercontent.com/Pingdred/Meowgram/main/logo.png"
+    "thumb": "https://raw.githubusercontent.com/Pingdred/Meowgram/main/logo.png",
+    "min_cat_version": "1.8"
 }

@@ -7,7 +7,7 @@ Supercharge your [Meowgram client](https://github.com/Pingdred/Meowgram) with th
 ## Requirements
 
  - Cheshire Cat >= 1.8.0
- - Meowgram >= 0.2.0
+ - Meowgram >= 0.1.0
 
 ## Installation
 

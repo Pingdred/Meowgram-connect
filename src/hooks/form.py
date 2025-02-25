@@ -1,3 +1,5 @@
+import sys
+
 from typing import Dict, Union
 
 from cat.looking_glass.stray_cat import StrayCat
@@ -11,6 +13,12 @@ from ..utils import from_meowgram
 def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None, Dict]:
     """Handle the form action from a user message."""
     active_form = cat.working_memory.active_form
+
+    if active_form is None:
+        return {
+            "output": "",
+        }
+
     # Meogram always sends the form name in lower case and with underscores
     active_form_name = active_form.name.replace(" ", "_").lower()
     # Check if the form name matches the active form
@@ -36,7 +44,7 @@ def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None
         return active_form.message()
 
 
-@hook
+@hook(priority=sys.maxsize)
 @from_meowgram(message_type=PayloadType.FORM_ACTION)
 def agent_fast_reply(_, cat: StrayCat) -> Union[None, Dict]:
     """Handle fast replies to user messages."""

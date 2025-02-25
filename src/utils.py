@@ -8,6 +8,7 @@ from cat.log import log
 
 from .models.message import CustomUserMessage
 
+
 def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str] = None) -> Callable:
     """
     Decorator that checks if a message is from Meowgram before calling the function.
@@ -32,6 +33,9 @@ def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str
 
             try:
                 if (message_type is None) or (message_type == custom_user_message.message_type):
+                    # If the message is from Meowgram, convert the user message to a custom user message
+                    # to have access to utility methods
+                    cat.working_memory.user_message_json = custom_user_message
                     return func(*args, cat, **kwargs)
             except Exception as e:
                 from traceback import print_exc

@@ -1,5 +1,3 @@
-import sys
-
 from typing import Dict
 
 from cat.mad_hatter.decorators import hook
@@ -8,15 +6,6 @@ from cat.looking_glass.stray_cat import StrayCat
 from ..models import PayloadType, CustomUserMessage
 from ..settings import MeogramConnectSettings, NameType
 from ..utils import get_form_state, get_meowgram_settings, from_meowgram
-
-
-@hook(priority=sys.maxsize)
-@from_meowgram
-def before_cat_reads_message(_, cat: StrayCat) -> None:
-    # If the message is from mewogram, convert the user message to a custom user message
-    # to have acces to utility methods
-    user_message = cat.working_memory.user_message_json
-    return CustomUserMessage(**user_message.model_dump())
 
 
 @hook

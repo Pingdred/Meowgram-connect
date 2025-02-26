@@ -4,6 +4,11 @@
 
 Supercharge your [Meowgram client](https://github.com/Pingdred/Meowgram) with the Meowgram Connect plugin, enabling smooth integration with the Cheshire Cat framework.
 
+## Requirements
+
+ - Cheshire Cat >= 1.8.0
+ - Meowgram >= 0.1.0
+
 ## Installation
 
 Choose one of the following methods to install Meowgram Connect:

@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel, Field
+
 from cat.mad_hatter.decorators import plugin
 
 class NameType(Enum):
@@ -19,13 +20,12 @@ class MeogramConnectSettings(BaseModel):
         description="The Cheshire cat will quote the message it is responding to",
         default=True
     )
-    show_tts_text: bool = Field(
-        title="Show Voice Note Transciption",
-        description="Show transcript when the message is a voice note",
+    show_form_buttons: bool = Field(
+        title="Show Form Buttons",
+        description="Show buttons for form actions",
         default=True
     )
-    
 
 @plugin
-def settings_model():   
+def settings_model():
     return MeogramConnectSettings

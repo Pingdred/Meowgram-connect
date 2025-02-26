@@ -50,16 +50,6 @@ def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str
     return decorator
 
 
-def get_meowgram_settings(cat: StrayCat) -> Dict:
-    """Retrieve Meowgram-specific settings."""
-    settings = cat.mad_hatter.get_plugin().load_settings()
-    return {
-        "show_tts_text": settings[
-            "show_tts_text"
-        ]  # Include TTS text visibility setting
-    }
-
-
 def get_form_state(working_memory: WorkingMemory) -> Dict:
     """Get the current state of the active form."""
     if working_memory.active_form is None:

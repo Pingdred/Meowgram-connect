@@ -25,13 +25,7 @@ class MeogramConnectSettings(BaseModel):
         description="Show buttons for form actions",
         default=True
     )
-    show_tts_text: bool = Field(
-        title="Show Voice Note Transciption",
-        description="Show transcript when the message is a voice note",
-        default=True
-    )
-
 
 @plugin
-def settings_model():   
+def settings_model():
     return MeogramConnectSettings

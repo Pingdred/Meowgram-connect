@@ -46,7 +46,7 @@ def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None
 
 @hook(priority=sys.maxsize)
 @from_meowgram(message_type=PayloadType.FORM_ACTION)
-def agent_fast_reply(_, cat: StrayCat) -> Union[None, Dict]:
+def fast_reply(_, cat: StrayCat) -> Union[None, Dict]:
     """Handle fast replies to user messages."""
     try:    
         user_message: CustomUserMessage = cat.working_memory.user_message_json

@@ -5,7 +5,7 @@ from cat.looking_glass.stray_cat import StrayCat
 
 from ..models import PayloadType, CustomUserMessage
 from ..settings import MeogramConnectSettings, NameType
-from ..utils import get_form_state, get_meowgram_settings, from_meowgram
+from ..utils import get_form_state, from_meowgram
 
 
 @hook
@@ -47,7 +47,6 @@ def before_cat_sends_message(message, cat: StrayCat) -> Dict:
     # Prepare Meowgram-specific parameters
     message.meowgram = {
         "send_params": reply_to if settings.reply_to else {},
-        "settings": get_meowgram_settings(cat),
         "active_form": get_form_state(cat.working_memory) if settings.show_form_buttons else None,
     }
     return message

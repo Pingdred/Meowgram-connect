@@ -7,6 +7,13 @@ from ..models import PayloadType, CustomUserMessage
 from ..settings import MeogramConnectSettings, NameType
 from ..utils import get_form_state, from_meowgram
 
+@hook
+@from_meowgram
+def before_cat_reads_message(User_message, cat: StrayCat):
+    # If the message is from Meowgram, convert the user message to a custom user message
+    # to have access to utility methods
+    user_message = CustomUserMessage(**User_message.model_dump())
+    return user_message
 
 @hook
 @from_meowgram(message_type=PayloadType.NEW_MESSAGE)

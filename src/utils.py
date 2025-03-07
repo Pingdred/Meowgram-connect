@@ -32,10 +32,7 @@ def from_meowgram(func: Optional[Callable] = None, *, message_type: Optional[str
             custom_user_message = CustomUserMessage(**user_message.model_dump())
 
             try:
-                if (message_type is None) or (message_type == custom_user_message.message_type):
-                    # If the message is from Meowgram, convert the user message to a custom user message
-                    # to have access to utility methods
-                    cat.working_memory.user_message_json = custom_user_message
+                if (message_type is None) or (message_type == custom_user_message.message_type):                    
                     return func(*args, cat, **kwargs)
             except Exception as e:
                 from traceback import print_exc

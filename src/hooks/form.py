@@ -16,15 +16,15 @@ def handle_form_action(cat: StrayCat, form_action: FormActionData) -> Union[None
 
     if active_form is None:
         return {
-            "output": "",
+            "output": "No active form found.",
         }
 
     # Meogram always sends the form name in lower case and with underscores
     active_form_name = active_form.name.replace(" ", "_").lower()
     # Check if the form name matches the active form
-    if not active_form or form_action.form_name != active_form_name:
+    if form_action.form_name != active_form_name:
         return {
-            "output": "",
+            "output": "Active form does not match the form action.",
         }
 
     # Validate action and update form state accordingly
